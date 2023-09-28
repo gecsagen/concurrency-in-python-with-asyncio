@@ -1,8 +1,7 @@
 import asyncio
 import asyncpg
 
-product_query = \
-    """
+product_query = """
 SELECT
 p.product_id,
 p.product_name,
@@ -23,16 +22,16 @@ async def query_product(pool):
 
 
 async def main():
-    async with asyncpg.create_pool(host='127.0.0.1',
-                                   port=5432,
-                                   user='postgres',
-                                   password='password',
-                                   database='products',
-                                   min_size=6,
-                                   max_size=6) as pool:  # A
-
-        await asyncio.gather(query_product(pool),
-                             query_product(pool))  # B
+    async with asyncpg.create_pool(
+        host="127.0.0.1",
+        port=5432,
+        user="postgres",
+        password="password",
+        database="products",
+        min_size=6,
+        max_size=6,
+    ) as pool:  # A
+        await asyncio.gather(query_product(pool), query_product(pool))  # B
 
 
 asyncio.run(main())
