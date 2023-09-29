@@ -17,7 +17,7 @@ def init(progress: Value):
 def map_frequencies(chunk: List[str]) -> Dict[str, int]:
     counter = {}
     for line in chunk:
-        word, _, count, _ = line.split('\t')
+        word, _, count, _ = line.split("\t")
         if counter.get(word):
             counter[word] = counter[word] + int(count)
         else:
@@ -31,26 +31,29 @@ def map_frequencies(chunk: List[str]) -> Dict[str, int]:
 
 async def progress_reporter(total_partitions: int):
     while map_progress.value < total_partitions:
-        print(f'Finished {map_progress.value}/{total_partitions} map operations')
+        print(f"Finished {map_progress.value}/{total_partitions} map operations")
         await asyncio.sleep(1)
 
 
 async def main(partiton_size: int):
     global map_progress
 
-    with open('googlebooks-eng-all-1gram-20120701-a', encoding='utf-8') as f:
+    with open("googlebooks-eng-all-1gram-20120701-a", encoding="utf-8") as f:
         contents = f.readlines()
         loop = asyncio.get_running_loop()
         tasks = []
-        map_progress = Value('i', 0)
+        map_progress = Value("i", 0)
 
-        with ProcessPoolExecutor(initializer=init,
-                                 initargs=(map_progress,)) as pool:
+        with ProcessPoolExecutor(initializer=init, initargs=(map_progress,)) as pool:
             total_partitions = len(contents) // partiton_size
             reporter = asyncio.create_task(progress_reporter(total_partitions))
 
             for chunk in partition(contents, partiton_size):
-                tasks.append(loop.run_in_executor(pool, functools.partial(map_frequencies, chunk)))
+                tasks.append(
+                    loop.run_in_executor(
+                        pool, functools.partial(map_frequencies, chunk)
+                    )
+                )
 
             counters = await asyncio.gather(*tasks)
 

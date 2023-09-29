@@ -3,7 +3,7 @@ from typing import Dict
 
 
 def map_frequency(text: str) -> Dict[str, int]:
-    words = text.split(' ')
+    words = text.split(" ")
     frequencies = {}
     for word in words:
         if word in frequencies:
@@ -13,8 +13,7 @@ def map_frequency(text: str) -> Dict[str, int]:
     return frequencies
 
 
-def merge_dictionaries(first: Dict[str, int],
-                       second: Dict[str, int]) -> Dict[str, int]:
+def merge_dictionaries(first: Dict[str, int], second: Dict[str, int]) -> Dict[str, int]:
     merged = first
     for key in second:
         if key in merged:
@@ -24,10 +23,12 @@ def merge_dictionaries(first: Dict[str, int],
     return merged
 
 
-lines = ["I know what I know",
-         "I know that I know",
-         "I don't know much",
-         "They don't know much"]
+lines = [
+    "I know what I know",
+    "I know that I know",
+    "I don't know much",
+    "They don't know much",
+]
 
 mapped_results = [map_frequency(line) for line in lines]
 
